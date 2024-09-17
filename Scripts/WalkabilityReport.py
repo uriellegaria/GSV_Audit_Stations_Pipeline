@@ -361,66 +361,73 @@ class WalkabilityReport:
         
         #GVI
         gviPath = os.path.join(resultsPath, "GVI.csv")
-        self.streetLabeller.tagWithCSVFile(gviPath, 0)
-        streetVisualizer = StreetAttributesVisualizer(self.sampler)
-        minColor = np.array(ColorsWalkabilityVars.GVI_MIN_COLOR.value)
-        maxColor = np.array(ColorsWalkabilityVars.GVI_MAX_COLOR.value)
-        streetVisualizer.colorByAttribute("GVI", VariableType.CONTINUOUS, 7, 7, 2, minColor, maxColor)
-        plt.savefig(os.path.join(outputDir,'gvi_map.pdf'), dpi = 600, bbox_inches = 'tight')
+        if(os.path.exists(gviPath)):
+            self.streetLabeller.tagWithCSVFile(gviPath, 0)
+            streetVisualizer = StreetAttributesVisualizer(self.sampler)
+            minColor = np.array(ColorsWalkabilityVars.GVI_MIN_COLOR.value)
+            maxColor = np.array(ColorsWalkabilityVars.GVI_MAX_COLOR.value)
+            streetVisualizer.colorByAttribute("GVI", VariableType.CONTINUOUS, 7, 7, 2, minColor, maxColor)
+            plt.savefig(os.path.join(outputDir,'gvi_map.pdf'), dpi = 600, bbox_inches = 'tight')
 
         #SVF
         svfPath = os.path.join(resultsPath, "SVF.csv")
-        self.streetLabeller.tagWithCSVFile(svfPath, 0)
-        minColor = np.array(ColorsWalkabilityVars.SVF_MIN_COLOR.value)
-        maxColor = np.array(ColorsWalkabilityVars.SVF_MAX_COLOR.value)
-        streetVisualizer.colorByAttribute("SVF", VariableType.CONTINUOUS, 7, 7, 2, minColor, maxColor)
-        plt.savefig(os.path.join(outputDir,'svf_map.pdf'), dpi = 600, bbox_inches = 'tight')
+        if(os.path.exists(svfPath)):
+            self.streetLabeller.tagWithCSVFile(svfPath, 0)
+            minColor = np.array(ColorsWalkabilityVars.SVF_MIN_COLOR.value)
+            maxColor = np.array(ColorsWalkabilityVars.SVF_MAX_COLOR.value)
+            streetVisualizer.colorByAttribute("SVF", VariableType.CONTINUOUS, 7, 7, 2, minColor, maxColor)
+            plt.savefig(os.path.join(outputDir,'svf_map.pdf'), dpi = 600, bbox_inches = 'tight')
 
         #Seller Stands
         sellersPath = os.path.join(resultsPath, "SellerStands.csv")
-        self.streetLabeller.tagWithCSVFile(sellersPath,0)
-        minColor = np.array(ColorsWalkabilityVars.INFORMAL_RETAIL_MIN_COLOR.value)
-        maxColor = np.array(ColorsWalkabilityVars.INFORMAL_RETAIL_MAX_COLOR.value)
-        streetVisualizer.colorByAttribute("N_Sellers", VariableType.CONTINUOUS, 7,7,2, minColor, maxColor)
-        plt.savefig(os.path.join(outputDir, 'seller_stand_map.pdf'), dpi = 600, bbox_inches = 'tight')
+        if(os.path.exists(sellersPath)):
+            self.streetLabeller.tagWithCSVFile(sellersPath,0)
+            minColor = np.array(ColorsWalkabilityVars.INFORMAL_RETAIL_MIN_COLOR.value)
+            maxColor = np.array(ColorsWalkabilityVars.INFORMAL_RETAIL_MAX_COLOR.value)
+            streetVisualizer.colorByAttribute("N_Sellers", VariableType.CONTINUOUS, 7,7,2, minColor, maxColor)
+            plt.savefig(os.path.join(outputDir, 'seller_stand_map.pdf'), dpi = 600, bbox_inches = 'tight')
 
         #Building counts
         buildingCountsPath = os.path.join(resultsPath, "Building_Counts.csv")
-        self.streetLabeller.tagWithCSVFile(buildingCountsPath, 0)
-        minColor = np.array(ColorsWalkabilityVars.BUILDING_HEIGHTS_MIN_COLOR.value)
-        maxColor = np.array(ColorsWalkabilityVars.BUILDING_HEIGHTS_MAX_COLOR.value)
-        streetVisualizer.colorByAttribute("Building_Counts", VariableType.CONTINUOUS, 7,7,2, minColor, maxColor)
-        plt.savefig(os.path.join(outputDir, "building_counts_map.pdf"))
+        if(os.path.exists(buildingCountsPath)):
+            self.streetLabeller.tagWithCSVFile(buildingCountsPath, 0)
+            minColor = np.array(ColorsWalkabilityVars.BUILDING_HEIGHTS_MIN_COLOR.value)
+            maxColor = np.array(ColorsWalkabilityVars.BUILDING_HEIGHTS_MAX_COLOR.value)
+            streetVisualizer.colorByAttribute("Building_Counts", VariableType.CONTINUOUS, 7,7,2, minColor, maxColor)
+            plt.savefig(os.path.join(outputDir, "building_counts_map.pdf"))
 
         #Building Heights
         buildingHeightPath = os.path.join(resultsPath, "Building_Heights.csv")
-        self.streetLabeller.tagWithCSVFile(buildingHeightPath, 0)
-        minColor = np.array(ColorsWalkabilityVars.BUILDING_HEIGHTS_MIN_COLOR.value)
-        maxColor = np.array(ColorsWalkabilityVars.BUILDING_HEIGHTS_MAX_COLOR.value)
-        streetVisualizer.colorByAttribute("Building_Heights",VariableType.CONTINUOUS, 7,7,2, minColor, maxColor)
-        plt.savefig(os.path.join(outputDir, "building_heights_map.pdf"), dpi = 600, bbox_inches = 'tight')
+        if(os.path.exists(buildingHeightPath)):
+            self.streetLabeller.tagWithCSVFile(buildingHeightPath, 0)
+            minColor = np.array(ColorsWalkabilityVars.BUILDING_HEIGHTS_MIN_COLOR.value)
+            maxColor = np.array(ColorsWalkabilityVars.BUILDING_HEIGHTS_MAX_COLOR.value)
+            streetVisualizer.colorByAttribute("Building_Heights",VariableType.CONTINUOUS, 7,7,2, minColor, maxColor)
+            plt.savefig(os.path.join(outputDir, "building_heights_map.pdf"), dpi = 600, bbox_inches = 'tight')
         
 
         #Counts
         countsPath = os.path.join(resultsPath, "Counts.csv")
-        self.streetLabeller.tagWithCSVFile(countsPath, 0)
-        fontSize = 8
-        minColor = np.array(ColorsWalkabilityVars.COUNTS_MIN_COLOR.value)
-        maxColor = np.array(ColorsWalkabilityVars.COUNTS_MAX_COLOR.value)
-        streetVisualizer.colorByAttribute("Count", VariableType.DISCRETE, 7, 7, 2, minColor, maxColor, fontSize)
-        plt.savefig(os.path.join(outputDir,'counts_map.pdf'), dpi = 600, bbox_inches = 'tight')
+        if(os.path.exists(countsPath)):
+            self.streetLabeller.tagWithCSVFile(countsPath, 0)
+            fontSize = 8
+            minColor = np.array(ColorsWalkabilityVars.COUNTS_MIN_COLOR.value)
+            maxColor = np.array(ColorsWalkabilityVars.COUNTS_MAX_COLOR.value)
+            streetVisualizer.colorByAttribute("Count", VariableType.CONTINUOUS, 7, 7, 2, minColor, maxColor)
+            plt.savefig(os.path.join(outputDir,'counts_map.pdf'), dpi = 600, bbox_inches = 'tight')
 
         #Audits autoMAPS
         detectionParent = os.path.join(resultsPath, "CSV_Audit")
-        self.streetLabeller.tagAudits(detectionParent, 21)
-        attributes = self.auditAttributes
-        minColor = np.array(ColorsWalkabilityVars.COUNTS_MIN_COLOR.value)
-        maxColor = np.array(ColorsWalkabilityVars.COUNTS_MAX_COLOR.value)
+        if(os.path.exists(detectionParent)):
+            self.streetLabeller.tagAudits(detectionParent, 21)
+            attributes = self.auditAttributes
+            minColor = np.array(ColorsWalkabilityVars.COUNTS_MIN_COLOR.value)
+            maxColor = np.array(ColorsWalkabilityVars.COUNTS_MAX_COLOR.value)
 
-        for i in range(0,len(attributes)):
-            print(attributes[i])
-            streetVisualizer.colorByAttribute(attributes[i], VariableType.CONTINUOUS, 7, 7, 2, minColor, maxColor)
-            plt.savefig(os.path.join(outputDir,attributes[i]+".pdf"), dpi = 600, bbox_inches = 'tight')
+            for i in range(0,len(attributes)):
+                print(attributes[i])
+                streetVisualizer.colorByAttribute(attributes[i], VariableType.CONTINUOUS, 7, 7, 2, minColor, maxColor)
+                plt.savefig(os.path.join(outputDir,attributes[i]+".pdf"), dpi = 600, bbox_inches = 'tight')
             
     
     def getPlacesDistanceMatrix(self, resultsPath, plotDistances = True):

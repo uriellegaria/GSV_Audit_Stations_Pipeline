@@ -367,7 +367,7 @@ class StreetLabeler:
             street.setAttributeValue(StreetProperty.SVI_COUNTS.value, counts)
     
 
-    def tagBuildingHeights(self, parentDir, modelPath):
+    def tagBuildingHeights(self, parentDir, modelPath, minHeight = 0.5, maxHeight = 40, coeffs = [1.4624, 0.5847]):
         from .Building_Height_Calculation.BuildingHeightCalculation import AutomaticHeightCalculation
         heightCalculator = AutomaticHeightCalculation(modelPath)
         streets = self.streetSampler.streets
@@ -400,14 +400,17 @@ class StreetLabeler:
             buildingCounter = 0
             for i in range(0,nImages):
                 image = images[i]
-                segmentedimages, heights = heightCalculator.computeHeightsWithMasks(image)
+                segmentedimages, heights = heightCalculator.computeHeightsWithMask(image)
                 nHeights = len(heights)
                 for j in range(0,nHeights):
                     height = heights[j]
-                    averageBuildingHeight = averageBuildingHeight + height
-                    buildingCounter = buildingCounter + 1
+                    correctedHeights = heightCalculator.applyLinearCorrection([height], coeffs)
+                    correctedHeight = correctedHeights[0]
+                    if(not np.isnan(correctedHeight)):
+                        averageBuildingHeight = averageBuildingHeight + correctedHeight
+                        buildingCounter = buildingCounter + 1
                 
-            if(buildingCounter > 0):
+            if(buildingCounter > 0 and averageBuildingHeight >= minHeight and averageBuildingHeight <= maxHeight):
                 averageBuildingHeight = averageBuildingHeight/buildingCounter
             else:
                 averageBuildingHeight = float('nan')

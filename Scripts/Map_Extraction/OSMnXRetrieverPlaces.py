@@ -66,6 +66,21 @@ class OSMnXRetrieverPlaces:
         except:
             print("No features found")
             return None
+    
+    def getFeaturesFromPolygon(self, polygon, placeType):
+        '''
+        Gets features from a shapely polygon
+        '''
+        logging.captureWarnings(True)
+        tags = self.getTags(placeType)
+        try:
+            gdf = ox.features_from_polygon(polygon, tags)
+            gdf['geometry'] = gdf['geometry'].to_crs(self.crs).centroid
+            return gdf
+        except:
+            print("No features found")
+            return None
+    
 
     def getFeaturesFromPlace(self, country, state, city, placeType):
         tags = self.getTags(placeType)
@@ -97,6 +112,20 @@ class OSMnXRetrieverPlaces:
         cleanedDataFrame.to_file(path, driver = 'GeoJSON')
 
         print('Exported Geojson')
+    
+    def exportAllFromPolygon(self, parentPath, polygon):
+        placeTypes = [e for e in PlaceType]
+        for i in range(0,len(placeTypes)):
+            placeType = placeTypes[i]
+            gdf = self.getFeaturesFromPolygon(polygon, placeType)
+            if(not gdf is None):
+                gdf = gdf[["geometry"]]
+
+                if(not os.path.exists(parentPath)):
+                    os.mkdir(parentPath)
+                
+                finalPath = os.path.join(parentPath, placeType.value+".geojson")
+                self.exportGeoJSON(gdf, finalPath)
 
 
     def exportAllFromPoint(self, parentPath, latitude, longitude, radius):
@@ -110,7 +139,8 @@ class OSMnXRetrieverPlaces:
                 if(not os.path.exists(parentPath)):
                     os.mkdir(parentPath)
                 
-                self.exportGeoJSON(gdf, parentPath + "/"+placeType.value+".geojson")
+                finalPath = os.path.join(parentPath, placeType.value+".geojson")
+                self.exportGeoJSON(gdf, finalPath)
         
 
     
